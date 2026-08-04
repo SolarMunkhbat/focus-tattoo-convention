@@ -3,17 +3,20 @@
 import { useState, type FormEvent } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useCollection } from "@/lib/hooks/useCollection";
-import { addItem, deleteItem, updateItem } from "@/lib/firestore-crud";
+import { addItem, deleteItem, updateItem } from "@/lib/content-client";
+import { useContentStore } from "@/lib/content-context";
 import type { BattleCategory } from "@/lib/types";
 
 const EMPTY = { day: 1 as 1 | 2, groupName: "", itemNumber: "", itemText: "" };
 
 export default function AdminBattles() {
   const { data: items, loading } = useCollection<BattleCategory>("battles", "order", "asc");
+  const { refresh } = useContentStore();
   const [form, setForm] = useState(EMPTY);
   const [editing, setEditing] = useState<BattleCategory | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function startAdd() {
     setEditing(null);
@@ -35,6 +38,7 @@ export default function AdminBattles() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
     try {
       if (editing) {
         await updateItem<BattleCategory>("battles", editing.id, form);
@@ -43,6 +47,9 @@ export default function AdminBattles() {
         await addItem("battles", { ...form, order: maxOrder + 1 });
       }
       setShowForm(false);
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
     } finally {
       setSubmitting(false);
     }
@@ -51,6 +58,7 @@ export default function AdminBattles() {
   async function onDelete(item: BattleCategory) {
     if (!confirm(`"${item.itemText}"-г устгах уу?`)) return;
     await deleteItem("battles", item.id);
+    await refresh();
   }
 
   const sorted = [...items].sort((a, b) => a.day - b.day || a.order - b.order);
@@ -111,6 +119,7 @@ export default function AdminBattles() {
               className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm outline-none focus:border-gold/60"
             />
           </div>
+          {error && <p className="sm:col-span-2 text-blood-soft text-sm">{error}</p>}
           <div className="sm:col-span-2 flex gap-3">
             <button
               type="submit"

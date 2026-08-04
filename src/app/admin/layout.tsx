@@ -1,12 +1,19 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useAuth } from "@/lib/auth-context";
+import { useEffect, useState, type ReactNode } from "react";
 import LoginForm from "@/components/admin/LoginForm";
 import AdminShell from "@/components/admin/AdminShell";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
-  const { user, isAdmin, loading } = useAuth();
+  const [username, setUsername] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setUsername(data?.username ?? null))
+      .finally(() => setLoading(false));
+  }, []);
 
   if (loading) {
     return (
@@ -16,9 +23,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!user || !isAdmin) {
-    return <LoginForm />;
+  if (!username) {
+    return <LoginForm onSuccess={(u) => setUsername(u)} />;
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell username={username} onLoggedOut={() => setUsername(null)}>{children}</AdminShell>;
 }

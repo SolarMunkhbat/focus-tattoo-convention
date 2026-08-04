@@ -4,35 +4,45 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Trash2, Upload } from "lucide-react";
 import { useCollection } from "@/lib/hooks/useCollection";
-import { addItem, deleteImage, deleteItem, uploadImage } from "@/lib/firestore-crud";
+import { addItem, deleteImage, deleteItem, uploadImage } from "@/lib/content-client";
+import { useContentStore } from "@/lib/content-context";
 import type { GalleryImage } from "@/lib/types";
 
 export default function AdminGallery() {
   const { data: images, loading } = useCollection<GalleryImage>("gallery", "createdAt", "desc");
+  const { refresh } = useContentStore();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function onFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) return;
     const files = Array.from(fileList);
     setUploading(true);
+    setError(null);
     setProgress({ done: 0, total: files.length });
 
-    for (const file of files) {
-      const { url, path } = await uploadImage("gallery", file);
-      await addItem("gallery", { imageUrl: url, storagePath: path, caption: "" });
-      setProgress((p) => ({ ...p, done: p.done + 1 }));
+    try {
+      for (const file of files) {
+        const { url, path } = await uploadImage("gallery", file);
+        await addItem("gallery", { imageUrl: url, storagePath: path, caption: "" });
+        setProgress((p) => ({ ...p, done: p.done + 1 }));
+      }
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
     }
-
-    setUploading(false);
-    if (inputRef.current) inputRef.current.value = "";
   }
 
   async function onDelete(img: GalleryImage) {
     if (!confirm("Энэ зургийг устгах уу?")) return;
     await deleteItem("gallery", img.id);
     if (img.storagePath) await deleteImage(img.storagePath);
+    await refresh();
   }
 
   return (
@@ -57,6 +67,7 @@ export default function AdminGallery() {
           Байршуулж байна… {progress.done}/{progress.total}
         </p>
       )}
+      {error && <p className="text-sm text-blood-soft mb-6">{error}</p>}
 
       {loading ? (
         <p className="text-ivory/40 text-sm">Ачааллаж байна…</p>

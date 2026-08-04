@@ -3,10 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "firebase/auth";
 import { LayoutDashboard, Users, CalendarClock, Trophy, Handshake, Images, HelpCircle, LogOut, ExternalLink } from "lucide-react";
-import { auth } from "@/lib/firebase";
-import { useAuth } from "@/lib/auth-context";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -18,9 +15,21 @@ const NAV = [
   { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
 ];
 
-export default function AdminShell({ children }: { children: ReactNode }) {
+export default function AdminShell({
+  children,
+  username,
+  onLoggedOut,
+}: {
+  children: ReactNode;
+  username: string;
+  onLoggedOut: () => void;
+}) {
   const pathname = usePathname();
-  const { user } = useAuth();
+
+  async function logout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    onLoggedOut();
+  }
 
   return (
     <div className="min-h-screen flex bg-ink">
@@ -53,7 +62,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             <ExternalLink size={16} /> Сайт үзэх
           </Link>
           <button
-            onClick={() => signOut(auth)}
+            onClick={logout}
             className="flex items-center gap-3 px-3 py-2.5 text-sm text-ivory/50 hover:bg-white/5 text-left"
           >
             <LogOut size={16} /> Гарах
@@ -63,7 +72,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
 
       <div className="flex-1 min-w-0 flex flex-col">
         <header className="h-14 border-b border-white/10 flex items-center justify-between px-5 sm:px-8">
-          <span className="text-sm text-ivory/50 truncate">{user?.email}</span>
+          <span className="text-sm text-ivory/50 truncate">{username}</span>
         </header>
         <main className="flex-1 p-5 sm:p-8">{children}</main>
       </div>

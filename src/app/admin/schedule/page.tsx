@@ -3,17 +3,20 @@
 import { useState, type FormEvent } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useCollection } from "@/lib/hooks/useCollection";
-import { addItem, deleteItem, updateItem } from "@/lib/firestore-crud";
+import { addItem, deleteItem, updateItem } from "@/lib/content-client";
+import { useContentStore } from "@/lib/content-context";
 import type { ScheduleItem } from "@/lib/types";
 
 const EMPTY = { day: 1 as 1 | 2, time: "", stage: "", title: "", description: "" };
 
 export default function AdminSchedule() {
   const { data: items, loading } = useCollection<ScheduleItem>("schedule", "day", "asc");
+  const { refresh } = useContentStore();
   const [form, setForm] = useState(EMPTY);
   const [editing, setEditing] = useState<ScheduleItem | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function startAdd() {
     setEditing(null);
@@ -30,6 +33,7 @@ export default function AdminSchedule() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
     try {
       if (editing) {
         await updateItem<ScheduleItem>("schedule", editing.id, form);
@@ -37,6 +41,9 @@ export default function AdminSchedule() {
         await addItem("schedule", form);
       }
       setShowForm(false);
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
     } finally {
       setSubmitting(false);
     }
@@ -45,6 +52,7 @@ export default function AdminSchedule() {
   async function onDelete(item: ScheduleItem) {
     if (!confirm(`"${item.title}"-г устгах уу?`)) return;
     await deleteItem("schedule", item.id);
+    await refresh();
   }
 
   const sorted = [...items].sort((a, b) => a.day - b.day || a.time.localeCompare(b.time));
@@ -110,6 +118,7 @@ export default function AdminSchedule() {
               className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm outline-none focus:border-gold/60"
             />
           </div>
+          {error && <p className="sm:col-span-2 text-blood-soft text-sm">{error}</p>}
           <div className="sm:col-span-2 flex gap-3">
             <button
               type="submit"

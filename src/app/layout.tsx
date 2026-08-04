@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Archivo_Narrow, Permanent_Marker } from "next/font/google";
-import { AuthProvider } from "@/lib/auth-context";
+import { ContentProvider } from "@/lib/content-context";
 import "./globals.css";
 
 const anton = Anton({
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${anton.variable} ${archivo.variable} ${marker.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ink text-ivory">
-        <AuthProvider>{children}</AuthProvider>
+        <ContentProvider>{children}</ContentProvider>
       </body>
     </html>
   );

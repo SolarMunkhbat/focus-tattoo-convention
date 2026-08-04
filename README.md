@@ -1,118 +1,90 @@
 # FOCUS Tattoo Convention 2026
 
-Next.js 16 (App Router) + TypeScript + Tailwind CSS + Firebase site for FOCUS
-Tattoo Convention (2026.09.19–20, Улаанбаатар). All public content — artists,
-schedule, sponsors, gallery, FAQ — is read live from Firestore/Storage, and is
-managed through the `/admin` dashboard with no redeploy required.
+Next.js 16 (App Router) + TypeScript + Tailwind CSS site for FOCUS Tattoo
+Convention (2026.09.19–20, Улаанбаатар). All public content — artists,
+schedule, tattoo battle categories, sponsors, gallery, FAQ — lives in a single
+JSON file on **Vercel Blob** and is managed through the `/admin` dashboard.
+No Firebase, no separate database — everything runs on Vercel.
 
 ## Stack
 
-- **Next.js 16** App Router, TypeScript, Turbopack
+- **Next.js 16** App Router, TypeScript, Turbopack, Route Handlers for the API
 - **Tailwind CSS v4**
-- **Firebase**: Authentication (admin login), Firestore (content), Storage (images)
+- **Vercel Blob** — stores `content.json` (all site data) and every uploaded image
 - **Framer Motion** for scroll/entrance animation
+- Admin auth: a single username/password (env vars) + a signed, HttpOnly session cookie — no external auth service
 
-## 1. Create the Firebase project
+## How content works
 
-1. Go to the [Firebase Console](https://console.firebase.google.com/) → **Add project**.
-2. Inside the project, add a **Web app** (</> icon) → copy the `firebaseConfig` values.
-3. **Build → Authentication** → Get started → enable the **Email/Password** provider.
-4. **Build → Authentication → Users** → Add user → create the one admin account
-   (this is the only login `/admin` will accept).
-5. **Build → Firestore Database** → Create database → start in production mode.
-6. **Build → Storage** → Get started.
+`GET /api/content` returns one JSON object with every section
+(`artists, schedule, battles, sponsors, gallery, faq`), read from a
+`content.json` blob. The public site polls it every 20s, so admin edits show
+up on their own without a redeploy or a page refresh.
 
-## 2. Configure environment variables
+Admin writes go through their own routes (`POST/PUT/DELETE
+/api/content/[section]/[id]`), each of which re-reads the blob, edits the one
+array, and writes it back — simple, no external database to run.
 
-Copy the example file and fill in the values from step 1:
+## 1. Set up Vercel Blob
 
-```bash
-cp .env.local.example .env.local
+1. Push this repo to GitHub and [import it into Vercel](https://vercel.com/new) (auto-detected as Next.js, no config needed) — **or**, for local dev first, just create the Blob store before deploying:
+2. Vercel Dashboard → your project (or **Storage** tab if not yet deployed) → **Create Database** → **Blob** → connect it to this project.
+3. Pull the generated token down locally:
+   ```bash
+   npx vercel link          # once, links this folder to the Vercel project
+   npx vercel env pull .env.local
+   ```
+   This writes `BLOB_READ_WRITE_TOKEN` into `.env.local` for you. (Alternatively copy it manually from Storage → your Blob store → **.env.local** tab.)
+
+## 2. Set the admin login + session secret
+
+Add to `.env.local` (see `.env.local.example`):
+
 ```
-
-```
-NEXT_PUBLIC_FIREBASE_API_KEY=...
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
-NEXT_PUBLIC_FIREBASE_APP_ID=...
-
-NEXT_PUBLIC_ADMIN_EMAIL=admin@focustattoo.mn   # same address as the user created in step 1.4
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=<pick something strong>
+SESSION_SECRET=<random string, e.g. `openssl rand -base64 24`>
 NEXT_PUBLIC_EVENT_START=2026-09-19T09:00:00+08:00
 ```
 
-## 3. Lock down Firestore & Storage
+These three (plus `BLOB_READ_WRITE_TOKEN`) also need to be added in **Vercel
+→ Project → Settings → Environment Variables** before deploying.
 
-`firestore.rules` and `storage.rules` in the repo root allow public **read** on
-every collection, and **write** only from the admin account. Open both files
-and replace the placeholder email with the same address as
-`NEXT_PUBLIC_ADMIN_EMAIL`, then deploy them:
-
-```bash
-npm install -g firebase-tools   # once
-firebase login
-firebase use --add              # pick the project you created in step 1
-firebase deploy --only firestore:rules,storage:rules
-```
-
-Without this step the app still runs, but writes from `/admin` will be
-rejected by Firestore/Storage's default rules.
-
-## 4. Run locally
+## 3. Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-- Public site: [http://localhost:3000](http://localhost:3000)
+- Public site: [http://localhost:3000](http://localhost:3000) — works even
+  before Blob is connected (falls back to built-in default content, including
+  the real Day 1/Day 2 battle categories).
 - Admin: [http://localhost:3000/admin](http://localhost:3000/admin) — log in
-  with the account created in step 1.4. Everything you add (artists, schedule
-  rows, battle categories, sponsors, gallery images, FAQ) appears on the
-  public site immediately.
+  with `ADMIN_USERNAME` / `ADMIN_PASSWORD`. Everything you add (artists,
+  schedule rows, battle categories, sponsors, gallery images, FAQ) appears on
+  the public site within ~20s, no redeploy.
 
-## 4b. Seed the real tattoo battle categories (optional, one-time)
+## 4. Deploy to Vercel
 
-The `battles` collection (the "ТЭМЦЭЭНИЙ АНГИЛАЛ" section) holds the actual
-Day 1 / Day 2 competition categories. Add them one by one through
-`/admin/battles`, or run the seed script once:
+1. Push to GitHub, import into Vercel (if not already done in step 1).
+2. Add the env vars from step 2 (+ `BLOB_READ_WRITE_TOKEN`) in **Settings → Environment Variables**.
+3. Deploy. Point your domain (e.g. `focustattooconvention.com`) at the project under **Settings → Domains**.
 
-1. Firebase Console → **Project settings → Service accounts** → Generate new
-   private key → save the JSON file *outside* this repo.
-2. ```bash
-   GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\key.json" npm run seed:battles
-   ```
+## Content sections
 
-Safe to re-run — it clears and re-writes the `battles` collection each time.
-
-## 5. Deploy to Vercel
-
-1. Push this repo to GitHub.
-2. [Import the repo in Vercel](https://vercel.com/new) — it auto-detects Next.js, no config needed.
-3. In the Vercel project → **Settings → Environment Variables**, add the same
-   variables from your `.env.local` (steps 2).
-4. Deploy. Point your domain (e.g. `focustattooconvention.com`) at the Vercel
-   project under **Settings → Domains**.
-
-Because content lives in Firestore/Storage rather than in the repo, adding an
-artist or a gallery photo through `/admin` afterward does **not** require a
-new deploy.
-
-## Firestore data model
-
-| Collection | Fields |
+| Section | Fields |
 |---|---|
 | `artists` | `name, country, studio, style, instagram, bio, photoUrl, photoPath` |
 | `schedule` | `day (1\|2), time, stage, title, description` |
-| `battles` | `day (1\|2), groupName, itemNumber, itemText, order` |
+| `battles` | `day (1\|2), groupName, itemNumber, itemText, order` — seeded by default with the real competition categories |
 | `sponsors` | `name, website, description, logoUrl, logoPath` |
 | `gallery` | `imageUrl, storagePath, caption` |
 | `faq` | `question, answer, order` |
 
-Storage layout: `artists/`, `gallery/`, `sponsors/` — each object's `...Path`
-field in Firestore is what admin deletes use to also remove the file from
-Storage.
+Images upload to Vercel Blob under `artists/`, `gallery/`, `sponsors/`; the
+`...Path` field stored alongside each item is what admin deletes use to also
+remove the file from Blob.
 
 ## Project structure
 
@@ -120,31 +92,37 @@ Storage.
 src/
   app/
     page.tsx              public one-page site
-    admin/                admin dashboard (auth-gated)
-      layout.tsx           route guard: shows LoginForm or AdminShell
-      page.tsx              dashboard stats
+    api/
+      content/route.ts               GET — public, whole content.json
+      content/[section]/route.ts     POST — admin, add item
+      content/[section]/[id]/route.ts PUT/DELETE — admin, edit/remove item
+      upload/route.ts                POST/DELETE — admin, image upload/delete
+      admin/login|logout|me/route.ts admin session
+    admin/                 admin dashboard (auth-gated)
+      layout.tsx            route guard: shows LoginForm or AdminShell
+      page.tsx               dashboard stats
       artists/ schedule/ battles/ sponsors/ gallery/ faq/
-  components/              public site sections
-  components/admin/        LoginForm, AdminShell, ImageUploadField
+  components/               public site sections
+  components/admin/         LoginForm, AdminShell, ImageUploadField
   lib/
-    firebase.ts             client SDK init
-    auth-context.tsx         React context around onAuthStateChanged
-    firestore-crud.ts        addItem/updateItem/deleteItem, uploadImage/deleteImage
-    hooks/useCollection.ts   realtime onSnapshot hook used by every section
-    types.ts                 Firestore document shapes
-firestore.rules / storage.rules / firebase.json
-scripts/seed-battles.mjs    one-time battles seed (firebase-admin, dev-only)
+    blob-content.ts          server-only: read/write content.json on Blob
+    session.ts                server-only: signed cookie session + password check
+    require-admin.ts          server-only: reads the session from a route handler
+    content-context.tsx       client: ContentProvider, polls /api/content
+    content-client.ts         client: addItem/updateItem/deleteItem/uploadImage/deleteImage
+    hooks/useCollection.ts    client: {data,loading,error} for one section
+    types.ts                  shared document shapes
 ```
 
 ## Notes
 
-- Admin access is a single hardcoded address (`NEXT_PUBLIC_ADMIN_EMAIL`),
-  checked both client-side (UX) and in the Firestore/Storage rules (the real
-  security boundary). To support multiple admins, switch the rules to check a
-  custom claim instead and grant it via the Firebase Admin SDK.
-- `.env.local` ships with clearly-fake placeholder values so `npm install &&
-  npm run dev` doesn't crash before Firebase is connected — replace them with
-  your real project's config per step 2.
-- The map in the Contact section is a keyless Google Maps embed centered on
-  Ulaanbaatar; swap `MAP_QUERY` in `src/components/ContactSection.tsx` for
-  the exact venue address once it's confirmed.
+- There's exactly one admin account, checked against `ADMIN_USERNAME` /
+  `ADMIN_PASSWORD` server-side; the session is a signed cookie (HMAC with
+  `SESSION_SECRET`), not stored anywhere server-side — works fine on
+  serverless/Vercel since there's no shared memory between invocations.
+- The `content.json` blob is a single JSON document — every write re-reads,
+  edits, and re-writes the whole thing. Fine for one admin editing
+  occasionally; if edits ever need to happen concurrently from multiple
+  people, that's the thing to revisit first.
+- The map in the Contact section is a keyless Google Maps embed; swap
+  `MAP_QUERY` in `src/components/ContactSection.tsx` if the venue changes.

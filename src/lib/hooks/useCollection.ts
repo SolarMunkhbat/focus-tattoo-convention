@@ -1,42 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { useMemo } from "react";
+import { useContentStore } from "@/lib/content-context";
+import type { Content } from "@/lib/blob-content";
 
 /**
- * Realtime Firestore collection subscription. Because this uses onSnapshot
- * (not a one-time getDocs), admin changes made in /admin appear on the
- * public site immediately, with no redeploy.
+ * Reads one section out of the shared content store (polled from
+ * /api/content, backed by a single Vercel Blob JSON file). Same
+ * {data, loading, error} shape as before so section/admin components
+ * didn't need to change.
  */
 export function useCollection<T>(
-  name: string,
-  orderByField?: string,
+  name: keyof Content,
+  orderByField?: keyof T,
   direction: "asc" | "desc" = "asc"
 ) {
-  const [data, setData] = useState<T[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { content, loading, error } = useContentStore();
 
-  useEffect(() => {
-    const ref = collection(db, name);
-    const q = orderByField ? query(ref, orderBy(orderByField, direction)) : query(ref);
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        setData(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as T));
-        setLoading(false);
-        setError(null);
-      },
-      (err) => {
-        setError(err.message);
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [name, orderByField, direction]);
+  const data = useMemo(() => {
+    const arr = ((content?.[name] as unknown as T[]) ?? []).slice();
+    if (orderByField) {
+      arr.sort((a, b) => {
+        const av = a[orderByField];
+        const bv = b[orderByField];
+        if (av < bv) return direction === "asc" ? -1 : 1;
+        if (av > bv) return direction === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+    return arr;
+  }, [content, name, orderByField, direction]);
 
   return { data, loading, error };
 }

@@ -3,17 +3,20 @@
 import { useState, type FormEvent } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useCollection } from "@/lib/hooks/useCollection";
-import { addItem, deleteItem, updateItem } from "@/lib/firestore-crud";
+import { addItem, deleteItem, updateItem } from "@/lib/content-client";
+import { useContentStore } from "@/lib/content-context";
 import type { FaqItem } from "@/lib/types";
 
 const EMPTY = { question: "", answer: "", order: 0 };
 
 export default function AdminFaq() {
   const { data: faqs, loading } = useCollection<FaqItem>("faq", "order", "asc");
+  const { refresh } = useContentStore();
   const [form, setForm] = useState(EMPTY);
   const [editing, setEditing] = useState<FaqItem | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function startAdd() {
     setEditing(null);
@@ -30,6 +33,7 @@ export default function AdminFaq() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
     try {
       if (editing) {
         await updateItem<FaqItem>("faq", editing.id, form);
@@ -37,6 +41,9 @@ export default function AdminFaq() {
         await addItem("faq", form);
       }
       setShowForm(false);
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
     } finally {
       setSubmitting(false);
     }
@@ -45,6 +52,7 @@ export default function AdminFaq() {
   async function onDelete(item: FaqItem) {
     if (!confirm("Энэ асуултыг устгах уу?")) return;
     await deleteItem("faq", item.id);
+    await refresh();
   }
 
   return (
@@ -89,6 +97,7 @@ export default function AdminFaq() {
               className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm outline-none focus:border-gold/60"
             />
           </div>
+          {error && <p className="text-blood-soft text-sm">{error}</p>}
           <div className="flex gap-3">
             <button
               type="submit"

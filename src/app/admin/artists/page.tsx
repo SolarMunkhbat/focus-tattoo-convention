@@ -4,7 +4,8 @@ import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useCollection } from "@/lib/hooks/useCollection";
-import { addItem, deleteImage, deleteItem, updateItem, uploadImage } from "@/lib/firestore-crud";
+import { addItem, deleteImage, deleteItem, updateItem, uploadImage } from "@/lib/content-client";
+import { useContentStore } from "@/lib/content-context";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import type { Artist } from "@/lib/types";
 
@@ -12,11 +13,13 @@ const EMPTY = { name: "", country: "", studio: "", style: "", instagram: "", bio
 
 export default function AdminArtists() {
   const { data: artists, loading } = useCollection<Artist>("artists", "name", "asc");
+  const { refresh } = useContentStore();
   const [form, setForm] = useState(EMPTY);
   const [file, setFile] = useState<File | null>(null);
   const [editing, setEditing] = useState<Artist | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function startAdd() {
     setEditing(null);
@@ -42,6 +45,7 @@ export default function AdminArtists() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
     try {
       let photoUrl = editing?.photoUrl ?? "";
       let photoPath = editing?.photoPath ?? "";
@@ -60,6 +64,9 @@ export default function AdminArtists() {
         await addItem("artists", { ...form, photoUrl, photoPath });
       }
       setShowForm(false);
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Алдаа гарлаа");
     } finally {
       setSubmitting(false);
     }
@@ -69,6 +76,7 @@ export default function AdminArtists() {
     if (!confirm(`"${artist.name}"-г устгах уу?`)) return;
     await deleteItem("artists", artist.id);
     if (artist.photoPath) await deleteImage(artist.photoPath);
+    await refresh();
   }
 
   return (
@@ -112,6 +120,7 @@ export default function AdminArtists() {
               className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm outline-none focus:border-gold/60"
             />
           </div>
+          {error && <p className="sm:col-span-2 text-blood-soft text-sm">{error}</p>}
           <div className="sm:col-span-2 flex gap-3">
             <button
               type="submit"

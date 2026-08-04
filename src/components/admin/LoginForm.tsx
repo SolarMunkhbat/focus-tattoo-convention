@@ -2,11 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 
-export default function LoginForm() {
-  const [email, setEmail] = useState("");
+export default function LoginForm({ onSuccess }: { onSuccess: (username: string) => void }) {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -16,9 +14,19 @@ export default function LoginForm() {
     setSubmitting(true);
     setError(null);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Нэвтрэх нэр эсвэл нууц үг буруу байна.");
+        return;
+      }
+      onSuccess(data.username);
     } catch {
-      setError("Нэвтрэх нэр эсвэл нууц үг буруу байна.");
+      setError("Сүлжээний алдаа гарлаа. Дахин оролдоно уу.");
     } finally {
       setSubmitting(false);
     }
@@ -33,13 +41,14 @@ export default function LoginForm() {
         <h1 className="font-display text-center text-xl mb-6">ADMIN НЭВТРЭХ</h1>
 
         <label className="block text-xs uppercase tracking-wide text-ivory/50 mb-1.5">
-          Имэйл
+          Нэвтрэх нэр
         </label>
         <input
-          type="email"
+          type="text"
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm mb-4 outline-none focus:border-gold/60"
         />
 
@@ -49,6 +58,7 @@ export default function LoginForm() {
         <input
           type="password"
           required
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm mb-5 outline-none focus:border-gold/60"
