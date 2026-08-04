@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Archivo_Narrow, Permanent_Marker } from "next/font/google";
 import { ContentProvider } from "@/lib/content-context";
-import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const anton = Anton({
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s · FOCUS Tattoo Convention",
   },
   description:
-    "FOCUS Tattoo Convention 2026 — 2026.09.19–20, Улаанбаатар. Монголын tattoo болон street art урлагийн хамгийн том фестиваль. Уран бүтээлчид, тэмцээн, flash gallery.",
+    "FOCUS Tattoo Convention 2026 — 2026.09.19–20, Улаанбаатар. Монголын tattoo урлагийн хамгийн том фестиваль. Уран бүтээлчид, тэмцээн, flash gallery.",
   keywords: [
     "tattoo convention",
     "focus tattoo",
@@ -41,7 +40,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "FOCUS Tattoo Convention 2026",
-    description: "2026.09.19–20, Улаанбаатар. Tattoo болон street art урлагийн фестиваль.",
+    description: "2026.09.19–20, Улаанбаатар. Tattoo урлагийн фестиваль.",
     url: siteUrl,
     siteName: "FOCUS Tattoo Convention",
     images: ["/logo.png"],
@@ -66,7 +65,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${anton.variable} ${archivo.variable} ${marker.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ink text-ivory">
-        <CustomCursor />
         <ContentProvider>{children}</ContentProvider>
       </body>
     </html>

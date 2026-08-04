@@ -120,19 +120,12 @@ body {
   }
 }
 .marquee-track {
-  animation: marquee-scroll 28s linear infinite;
+  animation: marquee-scroll 70s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
   }
-}
-
-/* custom cursor — only enabled once JS confirms a fine pointer is present.
-   Text fields keep the native I-beam so typing position stays legible. */
-html.has-fine-cursor,
-html.has-fine-cursor *:not(input):not(textarea) {
-  cursor: none !important;
 }
 
 .text-gold-gradient {

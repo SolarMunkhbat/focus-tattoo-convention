@@ -1,14 +1,21 @@
-const ITEMS = [
+const BASE_ITEMS = [
   "FOCUS TATTOO CONVENTION",
   "2026.09.19 – 09.20",
   "УЛААНБААТАР",
-  "STREET ART × TATTOO",
+  "BPRO TATTOO STUDIO",
+  "NEEDLE HOUSE MONGOLIA",
 ];
 
-function TrackContent() {
+// Repeated many times over so each half is always wider than any real
+// viewport — otherwise the loop shows a blank gap once per cycle instead
+// of flowing continuously.
+const REPEATS = 3;
+const HALF = Array.from({ length: REPEATS }, () => BASE_ITEMS).flat();
+
+function TrackHalf() {
   return (
     <>
-      {ITEMS.map((item, i) => (
+      {HALF.map((item, i) => (
         <span key={i} className="inline-flex items-center gap-6 px-6">
           <span className="font-display text-sm tracking-[0.08em]">{item}</span>
           <span className="text-gold" aria-hidden>
@@ -28,10 +35,10 @@ export default function Marquee() {
     >
       <div className="flex w-max marquee-track">
         <div className="flex shrink-0">
-          <TrackContent />
+          <TrackHalf />
         </div>
         <div className="flex shrink-0">
-          <TrackContent />
+          <TrackHalf />
         </div>
       </div>
     </div>
