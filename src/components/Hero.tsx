@@ -63,7 +63,7 @@ export default function Hero() {
               <CalendarDays size={16} className="text-gold-soft" /> 2026.09.19 – 09.20, 12:00 PM
             </span>
             <span className="inline-flex items-center gap-2">
-              <MapPin size={16} className="text-gold-soft" /> Улаанбаатар, Монгол, Буянт-Ухаа спорт цогцолбор
+              <MapPin size={16} className="text-gold-soft" /> Улаанбаатар, Буянт-Ухаа спорт цогцолбор
             </span>
           </motion.div>
 
