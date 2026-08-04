@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# raw 3D source files (huge, unoptimized — optimized copy lives in public/models)
+/3d logo/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

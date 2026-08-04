@@ -1,10 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { MapPin, CalendarDays } from "lucide-react";
 import Countdown from "./Countdown";
 import MagneticButton from "./MagneticButton";
+
+const Logo3D = dynamic(() => import("./Logo3D"), {
+  ssr: false,
+  loading: () => <div className="h-64 sm:h-72 lg:h-80 w-full" />,
+});
 
 const ABOUT_TEXT =
   "Tattoo Convention нь шивээсний урлаг, соёлыг олон нийтэд зөв таниулж, шивээс сонирхдог хүн бүрийг нэг дор нэгтгэх зорилготой арга хэмжээ юм. Мэргэжлийн уран бүтээлчид, шинээр суралцагчид болон шивээс сонирхогч бүх хүнийг хүрэлцэн ирэхийг урьж байна.";
@@ -101,18 +107,28 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          className="glass glass-gold p-8 lg:p-9"
-        >
-          <p className="text-[0.98rem] leading-relaxed text-ivory/75">{ABOUT_TEXT}</p>
-          <div className="mt-6 flex items-center gap-3">
-            <span className="h-px flex-1 bg-gold/25" />
-            <Image src="/logo.png" alt="" aria-hidden width={28} height={28} className="h-6 w-auto opacity-70" />
-          </div>
-        </motion.div>
+        <div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.35, ease: "easeOut" }}
+          >
+            <Logo3D />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="glass glass-gold p-8 lg:p-9 -mt-4"
+          >
+            <p className="text-[0.98rem] leading-relaxed text-ivory/75">{ABOUT_TEXT}</p>
+            <div className="mt-6 flex items-center gap-3">
+              <span className="h-px flex-1 bg-gold/25" />
+              <Image src="/logo.png" alt="" aria-hidden width={28} height={28} className="h-6 w-auto opacity-70" />
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       <motion.div

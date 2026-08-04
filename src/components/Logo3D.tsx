@@ -1,0 +1,51 @@
+"use client";
+
+import { Suspense, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Center, useGLTF } from "@react-three/drei";
+import * as THREE from "three";
+
+const MODEL_URL = "/models/logo.glb";
+
+function RotatingLogo() {
+  const spinRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF(MODEL_URL);
+
+  useFrame((_, delta) => {
+    if (spinRef.current) {
+      spinRef.current.rotation.y += delta * 0.4;
+    }
+  });
+
+  return (
+    <group rotation={[-0.22, 0, 0]}>
+      <group ref={spinRef}>
+        <Center>
+          <primitive object={scene} scale={1.1} />
+        </Center>
+      </group>
+    </group>
+  );
+}
+
+useGLTF.preload(MODEL_URL);
+
+export default function Logo3D() {
+  return (
+    <div className="h-64 sm:h-72 lg:h-80 w-full">
+      <Canvas
+        camera={{ position: [0, 0, 3.8], fov: 40 }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, alpha: true }}
+      >
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[3, 4, 2]} intensity={1.6} color="#fff4da" />
+        <directionalLight position={[-3, -1, -2]} intensity={0.5} color="#8a6cff" />
+        <pointLight position={[0, 2, 3]} intensity={0.6} color="#e8b04b" />
+        <Suspense fallback={null}>
+          <RotatingLogo />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+}
