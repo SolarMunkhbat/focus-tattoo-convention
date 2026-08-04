@@ -107,7 +107,10 @@ export default function ArtistsSection() {
                 </div>
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent opacity-90" />
+              {/* faint tint over the whole photo so any image sits comfortably in the dark theme */}
+              <div className="absolute inset-0 bg-ink/10 pointer-events-none" />
+              {/* strong scrim behind the text block — independent of photo brightness */}
+              <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink from-10% via-ink/80 via-50% to-transparent pointer-events-none" />
 
               {artist.instagram && (
                 <a
@@ -121,18 +124,18 @@ export default function ArtistsSection() {
                 </a>
               )}
 
-              <div className="absolute inset-x-0 bottom-0 p-5">
+              <div className="absolute inset-x-0 bottom-0 p-5 [text-shadow:0_2px_10px_rgba(0,0,0,0.85)]">
                 {artist.style && (
-                  <span className="inline-block mb-2 text-[0.62rem] uppercase tracking-wide text-gold-soft border border-gold/40 rounded-full px-2.5 py-0.5 bg-ink/70">
+                  <span className="inline-block mb-2 text-[0.62rem] uppercase tracking-wide text-gold-soft border border-gold/40 rounded-full px-2.5 py-0.5 bg-ink/80">
                     {artist.style}
                   </span>
                 )}
-                <h3 className="font-display text-xl leading-none">{artist.name}</h3>
-                <p className="text-xs text-ivory/60 mt-1.5">
+                <h3 className="font-display text-xl leading-none text-white">{artist.name}</h3>
+                <p className="text-xs text-ivory/85 mt-1.5">
                   {[artist.studio, artist.country].filter(Boolean).join(" · ")}
                 </p>
                 {artist.bio && (
-                  <p className="text-sm text-ivory/70 mt-2 line-clamp-2 max-h-0 group-hover:max-h-16 opacity-0 group-hover:opacity-100 transition-all duration-300 overflow-hidden">
+                  <p className="text-sm text-ivory/85 mt-2 line-clamp-2 max-h-0 group-hover:max-h-16 opacity-0 group-hover:opacity-100 transition-all duration-300 overflow-hidden">
                     {artist.bio}
                   </p>
                 )}
