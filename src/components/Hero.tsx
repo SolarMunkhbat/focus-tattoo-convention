@@ -60,10 +60,10 @@ export default function Hero() {
             className="flex flex-wrap gap-4 mt-8 text-sm text-ivory/80"
           >
             <span className="inline-flex items-center gap-2">
-              <CalendarDays size={16} className="text-gold-soft" /> 2026.09.19 – 09.20
+              <CalendarDays size={16} className="text-gold-soft" /> 2026.09.19 – 09.20, 12:00 PM
             </span>
             <span className="inline-flex items-center gap-2">
-              <MapPin size={16} className="text-gold-soft" /> Улаанбаатар, Монгол
+              <MapPin size={16} className="text-gold-soft" /> Улаанбаатар, Монгол, Буянт-Ухаа спорт цогцолбор
             </span>
           </motion.div>
 
@@ -107,8 +107,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
           className="glass glass-gold p-8 lg:p-9"
         >
-          <span className="eyebrow">Тухай</span>
-          <p className="mt-4 text-[0.98rem] leading-relaxed text-ivory/75">{ABOUT_TEXT}</p>
+          <p className="text-[0.98rem] leading-relaxed text-ivory/75">{ABOUT_TEXT}</p>
           <div className="mt-6 flex items-center gap-3">
             <span className="h-px flex-1 bg-gold/25" />
             <Image src="/logo.png" alt="" aria-hidden width={28} height={28} className="h-6 w-auto opacity-70" />
