@@ -33,5 +33,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    match /battles/{battleId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
   }
 }

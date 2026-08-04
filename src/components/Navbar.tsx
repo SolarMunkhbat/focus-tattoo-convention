@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { href: "#artists", label: "Артистууд" },
   { href: "#schedule", label: "Хөтөлбөр" },
-  { href: "#sponsors", label: "Sponsor" },
+  { href: "#battles", label: "Тэмцээн" },
   { href: "#gallery", label: "Gallery" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Холбоо барих" },
@@ -67,6 +66,13 @@ export default function Navbar() {
       {open && (
         <nav className="lg:hidden border-t border-white/10 bg-ink/95 backdrop-blur-md">
           <div className="container-page flex flex-col py-2">
+            <a
+              href="#artists"
+              onClick={() => setOpen(false)}
+              className="py-3 text-sm uppercase tracking-wide text-gold-soft border-b border-white/5"
+            >
+              Артистууд
+            </a>
             {LINKS.map((l) => (
               <a
                 key={l.href}

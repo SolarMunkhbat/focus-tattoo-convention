@@ -69,7 +69,22 @@ npm run dev
 - Public site: [http://localhost:3000](http://localhost:3000)
 - Admin: [http://localhost:3000/admin](http://localhost:3000/admin) — log in
   with the account created in step 1.4. Everything you add (artists, schedule
-  rows, sponsors, gallery images, FAQ) appears on the public site immediately.
+  rows, battle categories, sponsors, gallery images, FAQ) appears on the
+  public site immediately.
+
+## 4b. Seed the real tattoo battle categories (optional, one-time)
+
+The `battles` collection (the "ТЭМЦЭЭНИЙ АНГИЛАЛ" section) holds the actual
+Day 1 / Day 2 competition categories. Add them one by one through
+`/admin/battles`, or run the seed script once:
+
+1. Firebase Console → **Project settings → Service accounts** → Generate new
+   private key → save the JSON file *outside* this repo.
+2. ```bash
+   GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\key.json" npm run seed:battles
+   ```
+
+Safe to re-run — it clears and re-writes the `battles` collection each time.
 
 ## 5. Deploy to Vercel
 
@@ -90,6 +105,7 @@ new deploy.
 |---|---|
 | `artists` | `name, country, studio, style, instagram, bio, photoUrl, photoPath` |
 | `schedule` | `day (1\|2), time, stage, title, description` |
+| `battles` | `day (1\|2), groupName, itemNumber, itemText, order` |
 | `sponsors` | `name, website, description, logoUrl, logoPath` |
 | `gallery` | `imageUrl, storagePath, caption` |
 | `faq` | `question, answer, order` |
@@ -107,7 +123,7 @@ src/
     admin/                admin dashboard (auth-gated)
       layout.tsx           route guard: shows LoginForm or AdminShell
       page.tsx              dashboard stats
-      artists/ schedule/ sponsors/ gallery/ faq/
+      artists/ schedule/ battles/ sponsors/ gallery/ faq/
   components/              public site sections
   components/admin/        LoginForm, AdminShell, ImageUploadField
   lib/
@@ -117,6 +133,7 @@ src/
     hooks/useCollection.ts   realtime onSnapshot hook used by every section
     types.ts                 Firestore document shapes
 firestore.rules / storage.rules / firebase.json
+scripts/seed-battles.mjs    one-time battles seed (firebase-admin, dev-only)
 ```
 
 ## Notes

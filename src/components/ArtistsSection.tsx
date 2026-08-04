@@ -11,13 +11,8 @@ import type { Artist } from "@/lib/types";
 export default function ArtistsSection() {
   const { data: artists, loading } = useCollection<Artist>("artists", "name", "asc");
   const [search, setSearch] = useState("");
-  const [country, setCountry] = useState("Бүгд");
   const [style, setStyle] = useState("Бүгд");
 
-  const countries = useMemo(
-    () => ["Бүгд", ...Array.from(new Set(artists.map((a) => a.country).filter(Boolean)))],
-    [artists]
-  );
   const styles = useMemo(
     () => ["Бүгд", ...Array.from(new Set(artists.map((a) => a.style).filter(Boolean)))],
     [artists]
@@ -27,10 +22,10 @@ export default function ArtistsSection() {
     const matchesSearch =
       !search ||
       a.name.toLowerCase().includes(search.toLowerCase()) ||
-      a.studio.toLowerCase().includes(search.toLowerCase());
-    const matchesCountry = country === "Бүгд" || a.country === country;
+      a.studio.toLowerCase().includes(search.toLowerCase()) ||
+      a.country.toLowerCase().includes(search.toLowerCase());
     const matchesStyle = style === "Бүгд" || a.style === style;
-    return matchesSearch && matchesCountry && matchesStyle;
+    return matchesSearch && matchesStyle;
   });
 
   return (
@@ -50,21 +45,10 @@ export default function ArtistsSection() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Артист, студиогоор хайх…"
+              placeholder="Артист, студи, улсаар хайх…"
               className="w-full glass pl-9 pr-3 py-2.5 text-sm text-ivory placeholder:text-ivory/35 outline-none focus:border-gold/60"
             />
           </div>
-          <select
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            className="glass px-3 py-2.5 text-sm text-ivory outline-none focus:border-gold/60"
-          >
-            {countries.map((c) => (
-              <option key={c} value={c} className="bg-ink">
-                {c}
-              </option>
-            ))}
-          </select>
           <select
             value={style}
             onChange={(e) => setStyle(e.target.value)}

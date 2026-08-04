@@ -56,3 +56,17 @@ export interface FaqItem {
 }
 
 export type NewFaqItem = Omit<FaqItem, "id" | "createdAt">;
+
+/** A single award category (e.g. "Best Traditional Tattoo") inside a
+ * judging group (e.g. "Healed Tattoo Competition") on a given day. */
+export interface BattleCategory {
+  id: string;
+  day: 1 | 2;
+  groupName: string;
+  itemNumber: string;
+  itemText: string;
+  order: number;
+  createdAt: number;
+}
+
+export type NewBattleCategory = Omit<BattleCategory, "id" | "createdAt">;

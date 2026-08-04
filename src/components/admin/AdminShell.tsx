@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "firebase/auth";
-import { LayoutDashboard, Users, CalendarClock, Handshake, Images, HelpCircle, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Users, CalendarClock, Trophy, Handshake, Images, HelpCircle, LogOut, ExternalLink } from "lucide-react";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
 
@@ -12,6 +12,7 @@ const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/artists", label: "Артистууд", icon: Users },
   { href: "/admin/schedule", label: "Хөтөлбөр", icon: CalendarClock },
+  { href: "/admin/battles", label: "Тэмцээн", icon: Trophy },
   { href: "/admin/sponsors", label: "Sponsor", icon: Handshake },
   { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/faq", label: "FAQ", icon: HelpCircle },

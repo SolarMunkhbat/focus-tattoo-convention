@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex items-center gap-3">
           <Image src="/logo.png" alt="FOCUS Tattoo Convention" width={32} height={32} className="h-8 w-auto opacity-90" />
           <span className="text-xs text-ivory/45">
-            © 2026 FOCUS Tattoo Convention. Бүх эрх хуулиар хамгаалагдсан.
+            © 2026 FOCUS Tattoo Convention. 
           </span>
         </div>
         <a href="/admin" className="text-[0.7rem] text-ivory/25 hover:text-ivory/50 transition-colors">
