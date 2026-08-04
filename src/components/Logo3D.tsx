@@ -18,7 +18,7 @@ function RotatingLogo() {
   });
 
   return (
-    <group rotation={[-0.22, 0, 0]}>
+    <group rotation={[Math.PI / 2 - 0.15, 0, 0]}>
       <group ref={spinRef}>
         <Center>
           <primitive object={scene} scale={1.1} />
