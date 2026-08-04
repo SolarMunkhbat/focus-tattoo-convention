@@ -37,7 +37,9 @@ export async function readContent(): Promise<Content> {
     const blob = blobs.find((b) => b.pathname === CONTENT_PATH);
     if (!blob) return structuredClone(DEFAULT_CONTENT);
 
-    const res = await fetch(blob.url, { cache: "no-store" });
+    // Cache-bust in case an edge node cached an earlier response despite
+    // cacheControlMaxAge: 0 on write.
+    const res = await fetch(`${blob.url}?t=${Date.now()}`, { cache: "no-store" });
     if (!res.ok) return structuredClone(DEFAULT_CONTENT);
 
     const data = await res.json();
@@ -55,5 +57,9 @@ export async function writeContent(content: Content): Promise<void> {
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: "application/json",
+    // content.json is overwritten on every admin edit — without this the
+    // CDN caches it for a month by default, so reads right after a write
+    // (including the admin's own UI refresh) can serve stale data.
+    cacheControlMaxAge: 0,
   });
 }
