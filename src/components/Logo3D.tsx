@@ -18,8 +18,12 @@ function RotatingLogo() {
   });
 
   return (
-    <group rotation={[Math.PI / 2 - 0.15, 0, 0]}>
-      <group ref={spinRef}>
+    // Spin is on the outer group so it turns around the true world Y (vertical)
+    // axis; the inner group's tilt just orients the model face-on before that
+    // spin is applied — if the tilt were outermost, "rotation.y" would spin
+    // around the model's own tilted axis instead of a true vertical one.
+    <group ref={spinRef}>
+      <group rotation={[Math.PI / 2 - 0.15, 0, 0]}>
         <Center>
           <primitive object={scene} scale={1.1} />
         </Center>
