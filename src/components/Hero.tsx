@@ -4,14 +4,23 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin, CalendarDays } from "lucide-react";
 import Countdown from "./Countdown";
+import MagneticButton from "./MagneticButton";
 
 export default function Hero() {
   return (
     <section id="top" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
       {/* ambient gold glow */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 right-[-10%] w-[560px] h-[560px] rounded-full bg-gold/10 blur-[160px]" />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[420px] h-[420px] rounded-full bg-blood/10 blur-[140px]" />
+        <motion.div
+          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-40 right-[-10%] w-[560px] h-[560px] rounded-full bg-gold/10 blur-[160px]"
+        />
+        <motion.div
+          animate={{ x: [0, -24, 0], y: [0, 18, 0] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[-20%] left-[-10%] w-[420px] h-[420px] rounded-full bg-blood/10 blur-[140px]"
+        />
       </div>
 
       <div className="container-page relative z-10">
@@ -69,18 +78,22 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.6 }}
           className="flex flex-wrap gap-4 mt-10"
         >
-          <a
-            href="#artists"
-            className="inline-flex items-center px-7 py-3.5 bg-gold text-ink font-semibold text-sm uppercase tracking-[0.08em] hover:bg-gold-soft transition-colors"
-          >
-            Артистууд
-          </a>
-          <a
-            href="#schedule"
-            className="inline-flex items-center px-7 py-3.5 border border-ivory/30 text-ivory text-sm uppercase tracking-[0.08em] hover:border-gold hover:text-gold-soft transition-colors"
-          >
-            Хөтөлбөр
-          </a>
+          <MagneticButton>
+            <a
+              href="#artists"
+              className="inline-flex items-center px-7 py-3.5 bg-gold text-ink font-semibold text-sm uppercase tracking-[0.08em] hover:bg-gold-soft transition-colors"
+            >
+              Артистууд
+            </a>
+          </MagneticButton>
+          <MagneticButton>
+            <a
+              href="#schedule"
+              className="inline-flex items-center px-7 py-3.5 border border-ivory/30 text-ivory text-sm uppercase tracking-[0.08em] hover:border-gold hover:text-gold-soft transition-colors"
+            >
+              Хөтөлбөр
+            </a>
+          </MagneticButton>
         </motion.div>
       </div>
 

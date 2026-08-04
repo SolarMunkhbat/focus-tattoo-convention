@@ -37,24 +37,24 @@ export default function ContactSection() {
                 info@focustattoo.mn
               </span>
             </a>
-            <a href="tel:+97600000000" className="flex items-center gap-3 group">
+            <a href="tel:+97694201086" className="flex items-center gap-3 group">
               <Phone size={18} className="text-gold-soft shrink-0" />
               <span className="text-sm text-ivory/75 group-hover:text-gold-soft transition-colors">
-                +976 0000 0000
+                +976 94201086
               </span>
             </a>
             <div className="flex gap-3 mt-2">
               <a
                 href="#"
                 aria-label="Instagram"
-                className="w-11 h-11 border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold-soft transition-colors"
+                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold-soft hover:scale-105 transition-all"
               >
                 <InstagramIcon size={18} />
               </a>
               <a
                 href="#"
                 aria-label="Facebook"
-                className="w-11 h-11 border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold-soft transition-colors"
+                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-gold hover:text-gold-soft hover:scale-105 transition-all"
               >
                 <FacebookIcon size={18} />
               </a>

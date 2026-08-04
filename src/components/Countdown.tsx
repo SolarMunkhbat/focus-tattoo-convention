@@ -37,9 +37,13 @@ export default function Countdown() {
   }, []);
 
   return (
-    <div className="grid grid-cols-4 gap-3 max-w-lg" role="timer" aria-live="off">
+    <div
+      className="flex max-w-lg divide-x divide-gold/20 border-y border-gold/20"
+      role="timer"
+      aria-live="off"
+    >
       {UNITS.map((u) => (
-        <div key={u.key} className="glass glass-gold text-center py-3 px-1">
+        <div key={u.key} className="flex-1 text-center py-4 px-1">
           <b
             className="font-display block text-3xl sm:text-4xl text-gold-soft"
             style={{ fontVariantNumeric: "tabular-nums" }}

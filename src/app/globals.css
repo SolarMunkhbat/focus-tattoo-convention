@@ -59,14 +59,80 @@ body {
 /* ---------- shared utility surfaces ---------- */
 
 .glass {
-  background: linear-gradient(155deg, rgba(244, 239, 228, 0.06), rgba(244, 239, 228, 0.015));
+  background: linear-gradient(155deg, rgba(244, 239, 228, 0.05), rgba(244, 239, 228, 0.012));
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--ink-line);
+  border: 1px solid transparent;
+  box-shadow: 0 1px 0 rgba(244, 239, 228, 0.06) inset;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .glass-gold {
   border-color: rgba(202, 162, 74, 0.28);
+}
+
+/* Cursor-follow radial glow — JS sets --mx/--my (0-100%) on mousemove.
+   Falls back to no glow (still fine visually) when JS hasn't attached it. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(202, 162, 74, 0.16),
+    transparent 65%
+  );
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+.spotlight > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* borderless card: the quiet alternative to .glass for image-forward tiles */
+.soft-card {
+  background: var(--ink-raised);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+.soft-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+/* infinite marquee */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee-scroll 28s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* custom cursor — only enabled once JS confirms a fine pointer is present.
+   Text fields keep the native I-beam so typing position stays legible. */
+html.has-fine-cursor,
+html.has-fine-cursor *:not(input):not(textarea) {
+  cursor: none !important;
 }
 
 .text-gold-gradient {

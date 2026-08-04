@@ -41,7 +41,7 @@ export default function GallerySection() {
         </div>
 
         {!loading && images.length === 0 && (
-          <div className="glass p-10 text-center text-ivory/50">
+          <div className="soft-card p-10 text-center text-ivory/50">
             Зургууд тун удахгүй нэмэгдэнэ.
           </div>
         )}
@@ -66,7 +66,8 @@ export default function GallerySection() {
                 sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
                 className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <span className="absolute inset-0 ring-0 group-hover:ring-2 ring-gold/70 transition-all" />
+              <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="absolute inset-0 ring-1 ring-inset ring-white/0 group-hover:ring-gold/60 transition-all" />
             </motion.button>
           ))}
         </div>
