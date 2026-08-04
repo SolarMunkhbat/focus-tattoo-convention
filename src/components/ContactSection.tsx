@@ -1,9 +1,7 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
 
-// Swap the query in the iframe src for the exact venue address once confirmed,
-// e.g. "Steppe Arena, Ulaanbaatar" — no API key needed for this embed form.
-const MAP_QUERY = encodeURIComponent("Улаанбаатар хот, Монгол улс");
+const MAP_QUERY = encodeURIComponent("Буянт-Ухаа спорт цогцолбор, Улаанбаатар, Монгол улс");
 
 export default function ContactSection() {
   return (
@@ -30,7 +28,7 @@ export default function ContactSection() {
               <MapPin size={18} className="text-gold-soft mt-0.5 shrink-0" />
               <div>
                 <p className="font-semibold text-sm">Байршил</p>
-                <p className="text-sm text-ivory/60">[Танхимын нэр, дэлгэрэнгүй хаяг] · Улаанбаатар</p>
+                <p className="text-sm text-ivory/60">Буянт-Ухаа спорт цогцолбор · Улаанбаатар, Монгол</p>
               </div>
             </div>
             <a href="mailto:info@focustattoo.mn" className="flex items-center gap-3 group">
