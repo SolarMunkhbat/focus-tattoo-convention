@@ -26,7 +26,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "bg-ink/85 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+        scrolled ? "bg-ink/95 border-b border-white/10" : "bg-transparent"
       }`}
     >
       <div className="container-page flex items-center gap-6 py-3">
@@ -64,7 +64,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="lg:hidden border-t border-white/10 bg-ink/95 backdrop-blur-md">
+        <nav className="lg:hidden border-t border-white/10 bg-ink">
           <div className="container-page flex flex-col py-2">
             <a
               href="#artists"

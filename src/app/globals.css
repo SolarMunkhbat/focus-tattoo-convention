@@ -58,10 +58,11 @@ body {
 
 /* ---------- shared utility surfaces ---------- */
 
+/* Solid (no backdrop-filter) — blur-behind is expensive to repaint on
+   mobile GPUs, especially full-width/scroll-linked, so panels use a
+   layered tint over a solid base instead of frosted glass. */
 .glass {
-  background: linear-gradient(155deg, rgba(244, 239, 228, 0.05), rgba(244, 239, 228, 0.012));
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: linear-gradient(155deg, rgba(244, 239, 228, 0.07), rgba(244, 239, 228, 0.02)), var(--ink-raised);
   border: 1px solid transparent;
   box-shadow: 0 1px 0 rgba(244, 239, 228, 0.06) inset;
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;

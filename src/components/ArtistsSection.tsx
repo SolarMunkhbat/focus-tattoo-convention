@@ -115,7 +115,7 @@ export default function ArtistsSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${artist.name} Instagram`}
-                  className="absolute top-3 right-3 w-9 h-9 rounded-full bg-ink/50 backdrop-blur flex items-center justify-center text-ivory/80 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all hover:text-gold-soft hover:bg-ink/80"
+                  className="absolute top-3 right-3 w-9 h-9 rounded-full bg-ink/75 flex items-center justify-center text-ivory/80 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all hover:text-gold-soft hover:bg-ink"
                 >
                   <InstagramIcon size={15} />
                 </a>
@@ -123,7 +123,7 @@ export default function ArtistsSection() {
 
               <div className="absolute inset-x-0 bottom-0 p-5">
                 {artist.style && (
-                  <span className="inline-block mb-2 text-[0.62rem] uppercase tracking-wide text-gold-soft border border-gold/40 rounded-full px-2.5 py-0.5 bg-ink/40 backdrop-blur">
+                  <span className="inline-block mb-2 text-[0.62rem] uppercase tracking-wide text-gold-soft border border-gold/40 rounded-full px-2.5 py-0.5 bg-ink/70">
                     {artist.style}
                   </span>
                 )}
