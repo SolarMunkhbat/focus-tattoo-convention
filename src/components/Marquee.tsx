@@ -3,7 +3,7 @@ const BASE_ITEMS = [
   "2026.09.19 – 09.20",
   "УЛААНБААТАР",
   "BPRO TATTOO STUDIO",
-  "NEEDLE HOUSE MONGOLIA",
+  "PIERCING MONGOLIA",
 ];
 
 // Repeated many times over so each half is always wider than any real
