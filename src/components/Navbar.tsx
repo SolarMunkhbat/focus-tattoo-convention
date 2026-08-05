@@ -48,7 +48,7 @@ export default function Navbar() {
 
         <a
           href="#artists"
-          className="hidden lg:inline-flex items-center border border-gold/70 text-gold-soft px-4 py-2 text-xs uppercase tracking-[0.1em] font-semibold hover:bg-gold hover:text-ink transition-colors"
+          className="hidden lg:inline-flex items-center rounded-full border border-gold/70 text-gold-soft px-4 py-2 text-xs uppercase tracking-[0.1em] font-semibold hover:bg-gold hover:text-ink transition-colors"
         >
           Артистууд
         </a>
@@ -57,7 +57,7 @@ export default function Navbar() {
           aria-label={open ? "Цэс хаах" : "Цэс нээх"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="lg:hidden text-ivory p-2 border border-white/15"
+          className="lg:hidden text-ivory p-2 rounded-full border border-white/15"
         >
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>

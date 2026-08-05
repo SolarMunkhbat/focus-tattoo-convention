@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Archivo_Narrow, Permanent_Marker } from "next/font/google";
+import { Anton, Rubik, Permanent_Marker } from "next/font/google";
 import { ContentProvider } from "@/lib/content-context";
 import "./globals.css";
 
@@ -9,9 +9,9 @@ const anton = Anton({
   weight: "400",
 });
 
-const archivo = Archivo_Narrow({
-  variable: "--font-archivo",
-  subsets: ["latin"],
+const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
 });
 
@@ -62,7 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="mn"
-      className={`${anton.variable} ${archivo.variable} ${marker.variable} h-full antialiased`}
+      className={`${anton.variable} ${rubik.variable} ${marker.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ink text-ivory">
         <ContentProvider>{children}</ContentProvider>

@@ -38,7 +38,7 @@ export default function Countdown() {
 
   return (
     <div
-      className="flex max-w-lg divide-x divide-gold/20 border-y border-gold/20"
+      className="flex max-w-lg divide-x divide-gold/20 rounded-2xl border border-gold/20 overflow-hidden"
       role="timer"
       aria-live="off"
     >

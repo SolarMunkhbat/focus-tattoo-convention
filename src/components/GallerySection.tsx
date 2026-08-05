@@ -55,7 +55,7 @@ export default function GallerySection() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: (i % 12) * 0.04 }}
-              className="relative block w-full mb-3 break-inside-avoid group overflow-hidden"
+              className="relative block w-full mb-3 break-inside-avoid group overflow-hidden rounded-2xl"
               aria-label={img.caption || "Flash зураг томруулах"}
             >
               <Image
@@ -87,7 +87,7 @@ export default function GallerySection() {
             <button
               onClick={close}
               aria-label="Хаах"
-              className="absolute top-5 right-5 text-ivory/70 hover:text-gold-soft p-2"
+              className="absolute top-5 right-5 text-ivory/70 hover:text-gold-soft p-2 rounded-full hover:bg-white/10 transition-colors"
             >
               <X size={28} />
             </button>
@@ -124,7 +124,7 @@ export default function GallerySection() {
                 alt={images[openIndex].caption || "FOCUS flash art"}
                 width={1200}
                 height={1200}
-                className="w-full h-auto max-h-[85vh] object-contain"
+                className="w-full h-auto max-h-[85vh] object-contain rounded-2xl"
               />
               {images[openIndex].caption && (
                 <p className="text-center text-ivory/60 text-sm mt-3">{images[openIndex].caption}</p>

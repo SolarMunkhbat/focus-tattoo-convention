@@ -49,7 +49,7 @@ export default function LoginForm({ onSuccess }: { onSuccess: (username: string)
           autoComplete="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm mb-4 outline-none focus:border-gold/60"
+          className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2.5 text-sm mb-4 outline-none focus:border-gold/60"
         />
 
         <label className="block text-xs uppercase tracking-wide text-ivory/50 mb-1.5">
@@ -61,7 +61,7 @@ export default function LoginForm({ onSuccess }: { onSuccess: (username: string)
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full bg-white/5 border border-white/15 px-3 py-2.5 text-sm mb-5 outline-none focus:border-gold/60"
+          className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2.5 text-sm mb-5 outline-none focus:border-gold/60"
         />
 
         {error && <p className="text-blood-soft text-sm mb-4">{error}</p>}
@@ -69,7 +69,7 @@ export default function LoginForm({ onSuccess }: { onSuccess: (username: string)
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-gold text-ink font-semibold py-2.5 text-sm uppercase tracking-wide hover:bg-gold-soft transition-colors disabled:opacity-50"
+          className="w-full bg-gold text-ink font-semibold rounded-full py-2.5 text-sm uppercase tracking-wide hover:bg-gold-soft transition-colors disabled:opacity-50"
         >
           {submitting ? "Нэвтэрч байна…" : "Нэвтрэх"}
         </button>

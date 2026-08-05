@@ -18,7 +18,7 @@ export default function SponsorsSection() {
           <h2 className="font-display text-[clamp(1.9rem,4.5vw,3rem)] mt-3">SPONSOR</h2>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-l border-white/10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 rounded-2xl overflow-hidden border-t border-l border-white/10">
           {sponsors.map((s, i) => (
             <motion.a
               key={s.id}

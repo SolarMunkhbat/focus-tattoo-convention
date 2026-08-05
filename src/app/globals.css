@@ -28,7 +28,7 @@
 
   --font-display: var(--font-anton);
   --font-mark: var(--font-marker);
-  --font-body: var(--font-archivo);
+  --font-body: var(--font-rubik);
 }
 
 * {
@@ -48,7 +48,7 @@ html {
 body {
   background: var(--ink);
   color: var(--ivory);
-  font-family: var(--font-body), "Arial Narrow", sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
 }
 
 ::selection {
@@ -64,6 +64,7 @@ body {
 .glass {
   background: linear-gradient(155deg, rgba(244, 239, 228, 0.07), rgba(244, 239, 228, 0.02)), var(--ink-raised);
   border: 1px solid transparent;
+  border-radius: 1.25rem;
   box-shadow: 0 1px 0 rgba(244, 239, 228, 0.06) inset;
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
@@ -104,6 +105,7 @@ body {
 /* borderless card: the quiet alternative to .glass for image-forward tiles */
 .soft-card {
   background: var(--ink-raised);
+  border-radius: 1.25rem;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
 .soft-card:hover {

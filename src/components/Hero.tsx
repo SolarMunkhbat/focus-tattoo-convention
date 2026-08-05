@@ -23,12 +23,12 @@ export default function Hero() {
         <motion.div
           animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-40 right-[-10%] w-[560px] h-[560px] rounded-full bg-gold/10 blur-[160px]"
+          className="absolute -top-40 right-[-10%] w-[480px] h-[480px] rounded-full bg-gold/[0.07] blur-[170px]"
         />
         <motion.div
           animate={{ x: [0, -24, 0], y: [0, 18, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-20%] left-[-10%] w-[420px] h-[420px] rounded-full bg-blood/10 blur-[140px]"
+          className="absolute bottom-[-20%] left-[-10%] w-[360px] h-[360px] rounded-full bg-blood/[0.06] blur-[150px]"
         />
       </div>
 
@@ -38,12 +38,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="flex items-center gap-4 mb-8"
+            className="mb-8"
           >
             <Image src="/logo.png" alt="" aria-hidden width={64} height={64} className="h-14 w-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]" />
-            <span className="font-mark text-gold-soft/90 text-base border border-gold-soft/40 px-3 py-1 -rotate-2">
-              EST. 2026 · UB MONGOLIA
-            </span>
           </motion.div>
 
           <motion.h1
@@ -91,7 +88,7 @@ export default function Hero() {
             <MagneticButton>
               <a
                 href="#artists"
-                className="inline-flex items-center px-7 py-3.5 bg-gold text-ink font-semibold text-sm uppercase tracking-[0.08em] hover:bg-gold-soft transition-colors"
+                className="inline-flex items-center px-7 py-3.5 rounded-full bg-gold text-ink font-semibold text-sm uppercase tracking-[0.08em] hover:bg-gold-soft transition-colors"
               >
                 Артистууд
               </a>
@@ -99,7 +96,7 @@ export default function Hero() {
             <MagneticButton>
               <a
                 href="#schedule"
-                className="inline-flex items-center px-7 py-3.5 border border-ivory/30 text-ivory text-sm uppercase tracking-[0.08em] hover:border-gold hover:text-gold-soft transition-colors"
+                className="inline-flex items-center px-7 py-3.5 rounded-full border border-ivory/30 text-ivory text-sm uppercase tracking-[0.08em] hover:border-gold hover:text-gold-soft transition-colors"
               >
                 Хөтөлбөр
               </a>
