@@ -23,7 +23,7 @@ function RotatingLogo() {
     // spin is applied — if the tilt were outermost, "rotation.y" would spin
     // around the model's own tilted axis instead of a true vertical one.
     <group ref={spinRef}>
-      <group rotation={[Math.PI / 2 - 0.15, 0, 0.7]}>
+      <group rotation={[Math.PI / 2 - 0.15, 0, -Math.PI / 4]}>
         <Center>
           <primitive object={scene} scale={1.1} />
         </Center>
