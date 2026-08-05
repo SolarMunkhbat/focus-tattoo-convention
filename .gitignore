@@ -40,6 +40,10 @@ yarn-error.log*
 # raw 3D source files (huge, unoptimized — optimized copy lives in public/models)
 /3d logo/
 
+# raw organizer logo sources (huge, unoptimized — optimized copies live in public/organizers)
+/B Pro Tattoo Stduio Logo.jpg
+/Piercing Mongolia logo.PNG
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
