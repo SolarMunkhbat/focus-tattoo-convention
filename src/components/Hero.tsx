@@ -34,15 +34,6 @@ export default function Hero() {
 
       <div className="container-page relative z-10 grid lg:grid-cols-[1.15fr_0.8fr] gap-12 items-center">
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="mb-8"
-          >
-            <Image src="/logo.png" alt="" aria-hidden width={64} height={64} className="h-14 w-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]" />
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
