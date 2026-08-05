@@ -38,7 +38,8 @@ export default function Logo3D() {
   return (
     <div className="h-64 sm:h-72 lg:h-80 w-full">
       <Canvas
-        camera={{ position: [0, 0, 3.8], fov: 40 }}
+        orthographic
+        camera={{ position: [0, 0, 10], zoom: 110 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
