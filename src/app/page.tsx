@@ -36,8 +36,8 @@ export default function Home() {
     <>
       <Navbar />
       <main>
-        <HeroPoster />
         <Hero />
+        <HeroPoster />
         <Marquee />
         <ArtistPosterSlideshow images={posterImages} />
         <InkDivider />

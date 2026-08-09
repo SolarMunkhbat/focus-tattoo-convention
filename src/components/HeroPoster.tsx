@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function HeroPoster() {
   return (
-    <section className="pt-28 pb-4 sm:pt-32">
+    <section className="py-12 sm:py-16">
       <div className="container-page flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -18,7 +18,6 @@ export default function HeroPoster() {
             alt="FOCUS Tattoo Convention 2026 — Улаанбаатар, Буянт-Ухаа спорт цогцолбор"
             width={1080}
             height={1350}
-            priority
             className="w-full h-auto"
           />
         </motion.div>
