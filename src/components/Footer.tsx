@@ -27,7 +27,7 @@ export default function Footer() {
       <div className="container-page flex flex-col gap-6">
         <div>
           <span className="text-[0.65rem] uppercase tracking-[0.12em] text-ivory/40">
-            Зохион байгуулагч
+            Ерөнхий зохион байгуулагч
           </span>
           <div className="flex flex-wrap items-center gap-x-10 gap-y-4 mt-2">
             {ORGANIZERS.map((org) => (
