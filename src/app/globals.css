@@ -159,9 +159,12 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
-  font-family: var(--font-mark), cursive;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
   color: var(--gold-soft);
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 .eyebrow::before {
   content: "";

@@ -51,7 +51,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-5 font-mark text-lg sm:text-xl text-gold-soft/90 italic"
+            className="mt-5 font-medium tracking-wide text-lg sm:text-xl text-gold-soft/90 italic"
           >
             Don&apos;t hide your art. Change the way you see.
           </motion.p>
