@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import InkDivider from "@/components/InkDivider";
-import ArtistsSection from "@/components/ArtistsSection";
 import ArtistPosterSlideshow from "@/components/ArtistPosterSlideshow";
 import ScheduleSection from "@/components/ScheduleSection";
 import BattlesSection from "@/components/BattlesSection";
@@ -39,7 +38,6 @@ export default function Home() {
         <Hero />
         <Marquee />
         <ArtistPosterSlideshow images={posterImages} />
-        <ArtistsSection />
         <InkDivider />
         <ScheduleSection />
         <BattlesSection />

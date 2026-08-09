@@ -23,7 +23,7 @@ export default function ArtistPosterSlideshow({ images }: { images: string[] }) 
   if (images.length === 0) return null;
 
   return (
-    <section className="py-24 sm:py-32">
+    <section id="artists" className="py-24 sm:py-32">
       <div className="container-page">
         <div className="max-w-2xl mb-12">
           <span className="eyebrow">Line-up</span>
