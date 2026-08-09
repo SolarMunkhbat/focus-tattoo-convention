@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import Navbar from "@/components/Navbar";
+import HeroPoster from "@/components/HeroPoster";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import InkDivider from "@/components/InkDivider";
@@ -35,6 +36,7 @@ export default function Home() {
     <>
       <Navbar />
       <main>
+        <HeroPoster />
         <Hero />
         <Marquee />
         <ArtistPosterSlideshow images={posterImages} />
