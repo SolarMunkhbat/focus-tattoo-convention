@@ -47,6 +47,15 @@ export default function Hero() {
             <span className="text-gold-gradient">CONVENTION</span>
           </motion.h1>
 
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-5 font-mark text-lg sm:text-xl text-gold-soft/90 italic"
+          >
+            Don&apos;t hide your art. Change the way you see.
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
