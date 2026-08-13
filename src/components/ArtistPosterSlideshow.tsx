@@ -72,18 +72,24 @@ export default function ArtistPosterSlideshow({ images }: { images: string[] }) 
             <ChevronRight size={20} />
           </button>
 
-          <div className="flex justify-center gap-2 mt-5">
-            {images.map((src, i) => (
-              <button
-                key={src}
-                onClick={() => setIndex(i)}
-                aria-label={`Артист ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === index ? "w-6 bg-gold" : "w-1.5 bg-ivory/25 hover:bg-ivory/45"
-                }`}
-              />
-            ))}
-          </div>
+          {images.length > 12 ? (
+            <p className="text-center text-xs tracking-[0.1em] text-ivory/50 mt-5">
+              <span className="text-gold-soft">{index + 1}</span> / {images.length}
+            </p>
+          ) : (
+            <div className="flex justify-center gap-2 mt-5">
+              {images.map((src, i) => (
+                <button
+                  key={src}
+                  onClick={() => setIndex(i)}
+                  aria-label={`Артист ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === index ? "w-6 bg-gold" : "w-1.5 bg-ivory/25 hover:bg-ivory/45"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
